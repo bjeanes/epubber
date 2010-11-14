@@ -1,0 +1,14 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    RedCloth (4.2.3)
+    builder (2.1.2)
+    eeepub (0.6.1)
+      builder
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  RedCloth
+  eeepub
