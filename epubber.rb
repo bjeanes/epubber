@@ -4,6 +4,9 @@ require "fileutils"
 
 Bundler.require(:default)
 
+$:.unshift(File.join(File.dirname(__FILE__), "lib"))
+require "peepcode_redcloth_extensions"
+
 Dir.chdir(File.dirname(__FILE__))
 
 # TODO: erb?
@@ -11,8 +14,11 @@ template = File.read("src/template.html")
 source_files = Dir["src/peepcode-sphinx/text/*.textile"]
 
 FileUtils.rm_rf("tmp/output")
+FileUtils.rm_rf("tmp/build")
 FileUtils.mkdir_p("tmp/output")
-FileUtils.cp_r(Dir["src/assets/*"], "tmp/output")
+FileUtils.mkdir_p("tmp/build")
+
+FileUtils.cp_r(Dir["src/*.css"], "tmp/output")
 FileUtils.cp_r(Dir["src/peepcode-sphinx/artwork/*.png"], "tmp/output")
 
 source_files.each do |source_file|
@@ -21,8 +27,6 @@ source_files.each do |source_file|
   output_file = "tmp/output/#{source_file.gsub(/\.textile$/, '.html').gsub(/.*\//,'')}"
   File.open(output_file, "w+") {|f| f.write(html)}
 end
-
-content = Dir["tmp/output/*"]#.map { |file| [file, file.gsub(/.*\//, "content/")] }
 
 # http://rubydoc.info/github/jugyo/eeepub/master/frames
 epub = EeePub.make do
@@ -33,9 +37,9 @@ epub = EeePub.make do
   identifier  'http://peepcode.com/products/thinking-sphinx', :scheme => 'URL'
   uid         'http://peepcode.com/products/thinking-sphinx'
 
-#  files(Hash[content])
-  files(content)
+  files(Dir["tmp/output/*"])
 
+  # TODO: build this automatically by parsing the files
   nav [
     {:label => '1. Introduction', :content => '1-introduction.html', :nav => []},
     {:label => '2. Understanding Sphinx', :content => '2-understanding-sphinx.html', :nav => []},
@@ -45,4 +49,4 @@ epub = EeePub.make do
     {:label => '6. Resources', :content => '6-resources.html', :nav => []},
   ]
 end
-epub.save('thinking-sphinx.epub')
+epub.save('tmp/build/thinking-sphinx.epub')
