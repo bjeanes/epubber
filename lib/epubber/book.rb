@@ -8,8 +8,6 @@ module Epubber
       self.source_path = source_path
       self.build_path  = build_path
       self.output_path = output_path
-
-      transform_textile_to_html
     end
 
     def transform_textile_to_html
@@ -33,6 +31,8 @@ module Epubber
       FileUtils.cp_r(Dir["src/*.css"], build_path)
       FileUtils.cp_r(Dir[File.join(source_path, "artwork", "*.png")], build_path)
 
+      transform_textile_to_html
+
       epub.save(output_filename)
       output_filename
     end
@@ -49,16 +49,17 @@ module Epubber
 
     def epub
       # http://rubydoc.info/github/jugyo/eeepub/master/frames
-      epub = self
-      @epub ||= EeePub.make do
-        title       epub.title
-        creator     epub.creator
-        publisher   epub.publisher
-        date        epub.date
-        identifier  epub.url, :scheme => 'URL'
-        uid         epub.url
-        files       epub.files
-        nav         epub.nav
+      @epub ||= begin
+        EeePub.make.tap do |epub|
+          epub.title      title
+          epub.creator    creator
+          epub.publisher  publisher
+          epub.date       date
+          epub.identifier url, :scheme => 'URL'
+          epub.uid        url
+          epub.files      files
+          epub.nav        nav
+        end
       end
     end
 
@@ -66,10 +67,12 @@ module Epubber
       File.join(output_path, "#{param}.epub")
     end
 
+    # TODO: automatically figure this out
     def title
       "Thinking Sphinx"
     end
 
+    # TODO: automatically figure this out
     def creator
       "Pat Allan"
     end
