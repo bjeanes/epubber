@@ -22,7 +22,7 @@ source_files.each do |source_file|
   File.open(output_file, "w+") {|f| f.write(html)}
 end
 
-content = Dir["tmp/output/*"].map { |file| [file, file.gsub(/.*\//, "content/")] }
+content = Dir["tmp/output/*"]#.map { |file| [file, file.gsub(/.*\//, "content/")] }
 
 # http://rubydoc.info/github/jugyo/eeepub/master/frames
 epub = EeePub.make do
@@ -33,14 +33,15 @@ epub = EeePub.make do
   identifier  'http://peepcode.com/products/thinking-sphinx', :scheme => 'URL'
   uid         'http://peepcode.com/products/thinking-sphinx'
 
-  files(Hash[content])
+#  files(Hash[content])
+  files(content)
 
   nav [
     {:label => '1. Introduction', :content => '1-introduction.html', :nav => []},
     {:label => '2. Understanding Sphinx', :content => '2-understanding-sphinx.html', :nav => []},
     {:label => '3. Installation', :content => '3-sphinx-installation.html', :nav => []},
     {:label => '4. Address Book Example', :content => '4-address-book-example.html', :nav => []},
-    {:label => '5. References', :content => '5-references.html', :nav => []},
+    {:label => '5. References', :content => '5-reference.html', :nav => []},
     {:label => '6. Resources', :content => '6-resources.html', :nav => []},
   ]
 end
