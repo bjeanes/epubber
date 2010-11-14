@@ -1,6 +1,6 @@
 require "date"
 require "fileutils"
-require "peepcode_redcloth_extensions"
+require "peep_code_formatter"
 
 module Epubber
   class Book
