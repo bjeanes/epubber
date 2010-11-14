@@ -1,5 +1,12 @@
+@font-face {
+  font-family: BryantRegularCondensed;
+  src: url('Bryant-RegularCondensed.otf');
+}
+/*@font-face { font-family: Delicious; font-weight: bold; src: url('Delicious-Bold.otf'); }*/
+
+
 h1,h2,h3,h4,h5,h6 {
-  color: red;
+  font-family: BryantRegularCondensed sans-serif;
 }
 
 img {
