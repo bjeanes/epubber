@@ -5,8 +5,6 @@ Bundler.require(:default)
 
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), "epubber")))
 
-require "fileutils"
-require "peepcode_redcloth_extensions"
 require "book"
 
 ROOT_PATH   = File.expand_path(File.join(File.dirname(__FILE__), ".."))

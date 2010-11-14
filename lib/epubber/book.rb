@@ -1,4 +1,6 @@
 require "date"
+require "fileutils"
+require "peepcode_redcloth_extensions"
 
 module Epubber
   class Book
@@ -12,15 +14,19 @@ module Epubber
 
     def transform_textile_to_html
       epub_files.each do |source_file, html_file|
-        source = RedCloth.new(File.read(source_file))
-        source.extend(PeepCodeRedClothExtensions)
-        html = template.sub("REPLACE ME", source.to_html) # TODO: erb?
-        File.open(File.join(build_path, html_file), "w+") {|f| f.write(html)}
+        html_file = File.join(build_path, html_file)
+        textile   = RedCloth.new(File.read(source_file)).to_peepcode_html(code_path)
+        html      = template.sub("REPLACE ME", textile) # TODO: erb?
+        File.open(html_file, "w+") {|f| f.write(html)}
       end
     end
 
     def template
       @template ||= File.read(File.join(source_path, "..", "..", "template.html"))
+    end
+
+    def code_path
+      File.expand_path(File.join(source_path, "code"))
     end
 
     def save
@@ -67,7 +73,7 @@ module Epubber
       File.join(output_path, "#{param}.epub")
     end
 
-    # TODO: automatically figure this out
+    # TODO: automatically figure this out (normalize folder name?)
     def title
       "Thinking Sphinx"
     end
@@ -97,7 +103,7 @@ module Epubber
       Dir[File.join(build_path, "*")]
     end
 
-    # TODO: automatically figure this out
+    # TODO: automatically figure this out (override textile h1-h6 methods to record?)
     def nav
       [
         {:label => '1. Introduction', :content => '1-introduction.html', :nav => []},
