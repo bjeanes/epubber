@@ -1,14 +1,14 @@
 require "date"
 require "fileutils"
+require "tmpdir"
 require "peep_code_formatter"
 
 module Epubber
   class Book
     attr_accessor :build_path, :output_path, :source_path
 
-    def initialize(source_path, build_path, output_path)
+    def initialize(source_path, output_path)
       self.source_path = source_path
-      self.build_path  = build_path
       self.output_path = output_path
     end
 
@@ -29,8 +29,12 @@ module Epubber
       File.expand_path(File.join(source_path, "code"))
     end
 
+    def build_path
+      @build_path ||= File.join(Dir.tmpdir, "epubber", File.basename(source_path))
+    end
+
     def save
-      FileUtils.rm_rf("tmp")
+      FileUtils.rm_rf(output_path)
       FileUtils.mkdir_p(output_path)
       FileUtils.mkdir_p(build_path)
 
@@ -41,6 +45,8 @@ module Epubber
       transform_textile_to_html
 
       epub.save(output_filename)
+      FileUtils.rm_rf(build_path)
+
       output_filename
     end
 

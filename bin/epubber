@@ -5,7 +5,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "lib", "epubber
 abort "Please provide path to PeepCode book as first argument" unless ARGV.size > 0
 
 book_path = ARGV.shift
-book = Epubber::Book.new(book_path, BUILD_PATH, OUTPUT_PATH)
+book = Epubber::Book.new(book_path, OUTPUT_PATH)
 location = book.save
 
 puts "#{File.expand_path(book_path)} saved to #{File.expand_path(location)}"
