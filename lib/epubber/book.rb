@@ -22,7 +22,7 @@ module Epubber
     end
 
     def template
-      @template ||= File.read(File.join(source_path, "..", "..", "template.html"))
+      @template ||= File.read("src/template.html")
     end
 
     def code_path
