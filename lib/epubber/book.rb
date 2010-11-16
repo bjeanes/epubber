@@ -40,6 +40,7 @@ module Epubber
 
       FileUtils.cp_r(Dir["src/*.css"], build_path)
       FileUtils.cp_r(Dir["src/fonts/*.otf"], build_path)
+      FileUtils.cp_r(Dir["src/fonts/*.ttf"], build_path)
       FileUtils.cp_r(Dir[File.join(source_path, "artwork", "*.png")], build_path)
 
       transform_textile_to_html

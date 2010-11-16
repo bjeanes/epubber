@@ -2,8 +2,21 @@
   font-family: BryantRegularCondensed;
   src: url('Bryant-RegularCondensed.otf');
 }
-/*@font-face { font-family: Delicious; font-weight: bold; src: url('Delicious-Bold.otf'); }*/
 
+@font-face {
+  font-family: BryantProRegular;
+  src: url('BryantPro-Regular.otf');
+}
+
+@font-face {
+  font-family: BitstreamVeraSansMono;
+  src: url('VeraMono.ttf');
+}
+
+@font-face {
+  font-family: BryantRegularCompressed;
+  src: url('Bryant-RegularCompressed.otf')
+}
 
 h1,h2,h3,h4,h5,h6 {
   font-family: BryantRegularCondensed sans-serif;
@@ -11,4 +24,16 @@ h1,h2,h3,h4,h5,h6 {
 
 img {
   max-width: 100%;
+}
+
+p {
+  font-family: BryantProRegular sans-serif
+}
+
+a {
+  font-family: BryantRegularCompressed sans-serif;
+}
+
+pre, code {
+  font-family: BitstreamVeraSansMono monospace;
 }
