@@ -33,21 +33,25 @@ module Epubber
       @build_path ||= File.join(Dir.tmpdir, "epubber", File.basename(source_path))
     end
 
-    def save
-      FileUtils.rm_rf(output_path)
-      FileUtils.mkdir_p(output_path)
-      FileUtils.mkdir_p(build_path)
-
+    def bundle_assets
       FileUtils.cp_r(Dir["src/*.css"], build_path)
       FileUtils.cp_r(Dir["src/fonts/*.otf"], build_path)
       FileUtils.cp_r(Dir["src/fonts/*.ttf"], build_path)
       FileUtils.cp_r(Dir[File.join(source_path, "artwork", "*.png")], build_path)
+    end
 
+    def create_directories
+      FileUtils.rm_rf(output_path)
+      FileUtils.mkdir_p(output_path)
+      FileUtils.mkdir_p(build_path)
+    end
+
+    def save
+      create_directories
+      bundle_assets
       transform_textile_to_html
-
       epub.save(output_filename)
       FileUtils.rm_rf(build_path)
-
       output_filename
     end
 
